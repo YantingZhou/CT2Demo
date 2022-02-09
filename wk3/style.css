@@ -1,0 +1,123 @@
+@import url('./reset.css');
+@import url('./colors.css');
+@import url('./type.css');
+@import url('./grid.css');
+
+
+nav {
+    background-color: var(--black_a);
+}
+
+nav ul {
+    padding: 20px 0px 20px 40px;
+    margin: 0px auto;
+    display: flex;
+    flex-direction: column;
+}
+
+nav li {
+    margin: 10px 0px;
+    border-bottom: 1px solid var(--light-grey);
+}
+
+nav a {
+    text-decoration: none;
+    font-weight: bold;
+    color: var(--light-blue);
+}
+
+h1 {
+    margin: 30px;
+    color: var(--yellow);
+}
+
+h2 {
+    margin: 30px;
+    color: var(--yellow);
+}
+
+p {
+    margin: 30px;
+    color: white;
+}
+
+.center {
+    text-align: center;
+}
+
+#rectangle{
+    margin-left: 30px;
+    margin-top: 40px;
+    border-radius: 20px;
+    max-width:200px;
+    height:60px;
+    background:linear-gradient(rgb(30, 30, 227), rgb(184, 50, 153));
+}
+
+
+.dot {
+    height: 180px;
+    width: 180px;
+    background-color: hotpink;
+    background-image: linear-gradient(to bottom right, rgb(255, 65, 160), rgb(0, 162, 255));
+    border-radius: 50%;
+    display: inline-block;
+}
+
+.d2 {
+    visibility: hidden;
+}
+
+.d3 {
+    visibility: hidden;
+}
+
+h3 {
+    text-align: center;
+    font-weight:400;
+    padding: 15px;
+    color: rgb(255, 145, 205);
+}
+
+body {
+    background-image:linear-gradient(rgba(0, 0, 222, 0.495), rgba(255, 0, 217, 0.221)),
+    url("https://www.nationalgalleries.org/sites/default/files/2015AB05603-crop.jpg");
+    background-attachment: fixed;
+}
+
+img {
+    min-width:100%;
+    min-height:100%;
+    object-fit: cover;
+}
+ 
+/*MEDIUM SCREEN*/
+@media (min-width: 768px){
+    nav ul{
+        padding: 20px;
+        flex-direction: row;
+        justify-content: space-evenly;
+    }
+
+    .dot {
+        height: 140px;
+        width: 140px;
+    }
+
+    .d2 {
+        visibility: visible;
+    }
+}
+
+/*LARGE SCREEN*/
+@media (min-width: 960px) {
+
+    .dot {
+        height: 100px;
+        width: 100px;
+    }
+
+    .d3 {
+        visibility: visible;
+    }
+}
