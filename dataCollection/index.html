@@ -27,9 +27,9 @@
         let iolimitN = 0
         //let ioInclude ="&include=value"
         let ioST = "start_time="
-        let ioSTval= "2022-03-12T6:00:00Z"
+        let ioSTval= "2022-03-12T6:00:00Z"//13 00
         let ioET = "end_time="
-        let ioETval = "2022-03-16T23:00:00Z"
+        let ioETval = "2022-03-16T23:00:00Z"//15
         let data
         let slider
         let values = []
@@ -81,7 +81,7 @@
                 //     haloR = map(v, 3520, 3800, 0, width-40)
                 // }
 
-                fill(map(v, 3500, 3800, 250, 255),map(v, 3500, 3800, 245, 255),251,30)
+                fill(map(v, 3500, 3800, 250, 255),map(v, 3500, 3800, 245, 255),250,30)
                 circle(map(times[i].getMinutes(),0,60,0,width), height/2, map(v, 3520, 3800, 0, width-40))
             })
             pop()
