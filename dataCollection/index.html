@@ -47,10 +47,6 @@
 
         let mintime
 
-        let haloR
-        let haloV = 1
-
-        let timer=0;
 
         function preload(){
             fetchData()
@@ -75,8 +71,6 @@
             values.forEach((v, i) =>{
                 noStroke()
                 //console.log(v)
-                timer++
-                haloR = map(v, 3520, 3800, 0, width-40)
                 
                 // if (timer<=5) {
                 //     haloR+=haloV
@@ -88,7 +82,7 @@
                 // }
 
                 fill(map(v, 3500, 3800, 250, 255),map(v, 3500, 3800, 245, 255),250,30)
-                circle(map(times[i].getMinutes(),0,60,0,width), height/2, haloR)
+                circle(map(times[i].getMinutes(),0,60,0,width), height/2, map(v, 3520, 3800, 0, width-40))
             })
             pop()
 
