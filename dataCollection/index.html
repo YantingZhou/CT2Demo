@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Humidity</title>
+</head>
+<body>
+    <main>
+    <!-- <button id="trigerBTN">Get Data</button> -->
+    <!--KOAD P5JS LIBRARY-->
+    <script src="https://cdn.jsdelivr.net/npm/p5@1.4.1/lib/p5.js"></script> 
+    <!--WRITE YOUR CODE-->
+    <script>
+        /*Question: 
+        1. How to let one slider control all data feed? 
+        2. Why patterns are similar of differnent feeds?
+        3. Why are they gathering in same spots has same distance? Meaning
+        4. What if I want data arrangement in accord to hours?
+        */
+
+        let ioURL = "https://io.adafruit.com/api/v2/Florazyt/feeds/lightsensorfeed/data?"
+        let tempURL = "https://io.adafruit.com/api/v2/Florazyt/feeds/tempsensorfeed/data?"
+        let tiltURL = "https://io.adafruit.com/api/v2/Florazyt/feeds/tiltsensorfeed/data?"
+        let iolimitQ = "limit="
+        let iolimitN = 0
+        //let ioInclude ="&include=value"
+        let ioST = "start_time="
+        let ioSTval= "2022-03-12T6:00:00Z"
+        let ioET = "end_time="
+        let ioETval = "2022-03-16T23:00:00Z"
+        let data
+        let slider
+        let values = []
+        let times = []
+
+        let tempData
+        let tempslider
+        let tempvalues = []
+        let temptimes = []
+
+        let tiltData
+        let tiltslider
+        let tiltvalues = []
+        let tilttimes = []
+
+        let mintime
+
+        let haloR
+        let haloV = 1
+
+        let timer=0;
+
+        function preload(){
+            fetchData()
+        }
+
+        function setup(){
+            createCanvas(windowWidth,windowHeight)
+            // slider = createSlider(1, 500, 1, 10)
+            // slider.position(20, 80)
+            // slider.changed(fetchData)
+        }
+
+        function draw(){
+            fetchData()       
+            background(250,70)
+            push()
+            blendMode(MULTIPLY);
+
+            console.log(iolimitN)
+            
+            values.forEach((v, i) =>{
+                noStroke()
+                //console.log(v)
+                timer++
+                haloR = map(v, 3520, 3800, 0, width-40)
+                
+                // if (timer<=5) {
+                //     haloR+=haloV
+                // }else if(timer>5||timer<10){
+                //     haloR-=haloV
+                // }else if(timer>10){
+                //     timer=0
+                //     haloR = map(v, 3520, 3800, 0, width-40)
+                // }
+
+                fill(map(v, 3500, 3800, 250, 255),map(v, 3500, 3800, 245, 255),250,30)
+                circle(map(times[i].getMinutes(),0,60,0,width), height/2, haloR)
+            })
+            pop()
+
+            push()
+            blendMode(BLEND)
+            tempvalues.forEach((v, i) =>{
+                //console.log(v)
+                noStroke()
+                fill(map(v, 660, 690, 0, 100),220,map(v, 660, 690, 0, 255),5)
+                circle(map(temptimes[i].getMinutes(), 0, 60, 40, width-40),height/2, map(v, 660, 690, 0, 120))
+                // textSize(15)
+                // textAlign(CENTER)
+                // textFont('Georgia')
+                // fill(130,220,255)
+                // text(temptimes[i].getMinutes(), map(temptimes[i].getMinutes(),0,60,40,width-40),height/2+100)
+            }) 
+    
+
+            tiltvalues.forEach((v, i) =>{
+                //console.log(v)
+                let tiltx = map(tilttimes[i].getMinutes(), 0, 60, 40, width-40)
+                noStroke()
+                fill(0,0,230,50)
+                circle(tiltx,height/2, map(v, 0, 4095, 3, 15))
+            }) 
+
+            pop()
+            
+            
+        }
+
+        //function fetchTime()
+
+        
+
+        function fetchData(){
+            // mintime = second()
+            // if(mintime<10){
+            //     mintime = "0" + mintime
+            // }
+            // ioETval = "2022-03-15T06:"+mintime+":00Z"
+            //console.log(mintime)
+
+            // if(slider){
+            // //console.log(slider.value())
+            // iolimitN = slider.value()
+
+            // }
+
+            if(iolimitN<500){
+                iolimitN++
+            }else if(iolimitN=500){
+                iolimitN=0
+            }
+
+            let assembledURL = ioURL+iolimitQ+iolimitN+"&"+ioST+ioSTval+"&"+ioET+ioETval
+            data = loadJSON(assembledURL, dataHandler, errorHandler)
+
+            let tempAssembledURL = tempURL+iolimitQ+iolimitN+"&"+ioST+ioSTval+"&"+ioET+ioETval
+            tempData = loadJSON(tempAssembledURL, tempdataHandler, errorHandler)
+
+            let tiltAssembledURL = tiltURL+iolimitQ+iolimitN+"&"+ioST+ioSTval+"&"+ioET+ioETval
+            tiltData = loadJSON(tiltAssembledURL, tiltdataHandler, errorHandler)
+        }
+
+        function dataHandler(APIdata){
+            values = []
+            times = []
+            APIdata.forEach((elem, i) => {
+                //console.log(elem.created_at)
+                values[i]= elem.value
+                times[i] = new Date(elem.created_at)
+                //console.log(times[i].getMinutes())
+            })
+        }
+
+        function errorHandler(APIerror){
+            console.error(APIerror)
+        }
+
+        function tempdataHandler(APIdata){
+            tempvalues = []
+            temptimes = []
+            APIdata.forEach((elem, i) => {
+                //console.log(elem.created_at)
+                tempvalues[i]= elem.value
+                temptimes[i] = new Date(elem.created_at)
+                //console.log(temptimes[i].getMinutes())
+            })
+        }
+
+        function tiltdataHandler(APIdata){
+            tiltvalues = []
+            tilttimes = []
+            APIdata.forEach((elem, i) => {
+                //console.log(elem.created_at)
+                tiltvalues[i]= elem.value
+                tilttimes[i] = new Date(elem.created_at)
+                //console.log(tilttimes[i].getMinutes())
+            })
+        }
+    </script>
+    </main>
+        <section>
+            <h1>MY HUMIDITY</h1>
+            <h2>Project Documentation</h2>
+        </section>
+
+
+</body>
+</html>
