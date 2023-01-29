@@ -1,2 +1,2 @@
-# CT2 Homeworks
+# CreativeTech Homeworks
 of every week
