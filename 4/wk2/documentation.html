@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>API Documentation</title>
+</head>
+<body>
+    <h1>Everything You Need To Know About Toto</h1>
+    <img src="toto.jpeg" alt="toto" width="300">
+    <h2>Documentation</h2>
+    <div></div>
+    <section>
+        <p>My "Rube Goldberge Machine" links to 4 APIs. Each of them is somehow related to my cat -- Toto.</p>
+        <a href="https://api.nasa.gov/"><img src="https://www.nasa.gov/sites/all/themes/custom/nasatwo/images/nasa-logo.svg" alt="nasa api" height="30"></a>
+        <a href="https://www.petfinder.com/developers/"><img src="https://www.petfinder.com/themes/custom/consumer_react/logo.svg" alt="petfinder api" height="30"></a>
+        <a href="https://alexwohlbruck.github.io/cat-facts/docs/"><img src="https://camo.githubusercontent.com/95d7685a3d79508db1a1d94471ec2d57fd5972accc7222275127c566994ae958/687474703a2f2f692e696d6775722e636f6d2f3952474a3545612e706e67" alt="cat fact api" height="30"></a>
+        <a href="https://www.thecocktaildb.com/api.php"><img src="https://www.thecocktaildb.com/images/logo.png" alt="cocktail aip" height="30"></a>
+    </section>
+    <section>
+        <p>The NASA API Astronomy Picture of the Day was fetched according to the date when Toto is born.</p>
+        <p>The second API Petfinder was to find the nearest cat lady near Toto. It uses OAuth for secure authentication. The instruction from their website uses curl. I used a online code translator convert it to javascript.</p>
+        <div><img src="curl.png" alt="curl" width="800"></div>
+        <div><img src="java.png" alt="java" width="800"></div>
+        <p>I created 3 constant for fixed url, key, and secret, and a variable for token which is going to change each time fetched.</p>
+        <div><img src="pf 1.png" alt="pf1" width="800"></div>
+        <p>Because it is a 2 step process (authentication and fetch API), I separate one function into two, each of them contains a fetch method. I'm not sure if this is the best way to fetch data, but at least it worked.</p>
+        <div><img src="pf 2.png" alt="pf2" width="400"></div>
+        <div><img src="pf 3.png" alt="pf3" width="400"></div>
+        <div><img src="pf 4.png" alt="pf4" width="400"></div>
+        <p>Data! The result is from the URL, which contain query of female and the zip code of my home</p>
+        <div><img src="pf data.png" alt="pfdata" width="400"></div>
+        <p>The only problem is: if the new listing of pet doesn't have a photo, the photo array will be empty, causing error.</p>
+        <p>This is how the section shows if it functions well.</p>
+        <img src="pf result.png" alt="pf result" width="400">
+        <p>The other two APIs is cat fact and cocktail. For cocktail, I added query of "shot"</p>
+    </section>
+    
+</body>
+</html>

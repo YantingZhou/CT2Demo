@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Everything You Need To Know About Toto</title>
+</head>
+
+<body>
+    <section>
+        <h1>Everything You Need To Know About Toto</h1>
+    </section>
+    <button role="button" id="initTrigger">Tell Me Now!!!</button>
+    <a href="documentation.html"><button role="button">Documentation</button></a>
+    <section id="NASASection"></section>
+    <section id="petfinderSection"></section>
+    <section id="catfactSection"></section>
+    <section id="cocktailSection"></section>
+
+
+    <script>
+        let triggerButton = document.getElementById('initTrigger')
+        let cocktailSection = document.getElementById('cocktailSection')
+        let NASASection = document.getElementById('NASASection')
+        let petfinderSection = document.getElementById('petfinderSection')
+        let catfactSection = document.getElementById('catfactSection')
+
+        const CocktailURL = "https://www.thecocktaildb.com/api/json/v1/1/filter.php?c=Shot"
+
+        const catfactURL = "https://cat-fact.herokuapp.com/facts"
+
+        const nasaAPODURL = "https://api.nasa.gov/planetary/apod"
+        const nasaAPIKey = "api_key=FnoOMD28bBgT5nAR0jgL2rvV3E2AiRxz3FL45G49"
+        const nasaDate = "date=2013-8-20"
+
+        const petfinderURL = "https://api.petfinder.com/v2/oauth2/token"
+        const petfinderAPIKey = "SmTl3jVgTT1HsbH7X48H1kW7kOzBHzLOR54EJ14NYMmaqg4pM6"
+        const petfinderSecret = "9xWP85ElqwH9l3p5qaxwoeGW3LFwrOnXagusPSl6"
+        var petfinderToken = ""
+
+
+        const fetchCocktailData = () => {
+
+            fetch(CocktailURL)
+                .then((payload) => payload.json())
+                .then((data) => { appendCocktailData(data) })
+        }
+
+        const appendCocktailData = (data) => {
+            const randomDrink = data.drinks[Math.floor(Math.random()*10)]
+            const drinkName = randomDrink.strDrink
+            const drinkImg = randomDrink.strDrinkThumb
+
+            const nameHeader = document.createElement('h3')
+            nameHeader.innerText = "If Toto buys you a drink, it will be: " + drinkName
+            cocktailSection.appendChild(nameHeader)
+
+            const image = document.createElement('img')
+            image.src = drinkImg
+            image.alt = "image of" + drinkName
+            cocktailSection.appendChild(image)
+
+            fetchNASAData()
+            fetchPetfinderData()
+            fetchCatfactData()
+
+        }
+
+        const fetchNASAData = () => {
+            const fetchURL = nasaAPODURL + "?" + nasaAPIKey + "&" + nasaDate
+            fetch(fetchURL)
+                .then((payload) => payload.json())
+                .then((data) => appendNASAData(data))
+        }
+
+        const appendNASAData = (data) => {
+
+            const nasaTitle = data.title
+            const NASAExplanation = data.explanation
+            const imgURL = data.url
+
+            const nasaTitleDisplay = document.createElement('h3')
+            nasaTitleDisplay.innerText = "The day Toto was born, the universe was like: " + nasaTitle
+
+            const nasaText = document.createElement('body')
+            nasaText.innerText = NASAExplanation
+
+            const nasaImg = document.createElement('img')
+            nasaImg.src = imgURL
+            nasaImg.alt = "the image of " + nasaTitle
+
+            NASASection.appendChild(nasaTitleDisplay)
+            NASASection.appendChild(nasaImg)
+            NASASection.appendChild(nasaText)
+        }
+
+        const fetchPetfinderData = () => {
+            fetch(petfinderURL, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                },
+                body: 'grant_type=client_credentials&client_id=' + petfinderAPIKey + '&client_secret=' + petfinderSecret
+            })
+            // .then(response => response.text())
+            // .then(text => console.log(text))
+            .then((payload) => payload.json())
+            .then((data) => { getPetfinderToken(data) })
+                }
+
+        const getPetfinderToken = (data) => {
+            //console.log(data)
+
+            petfinderToken = data.access_token
+            fetch('https://api.petfinder.com/v2/animals?type=cat&gender=female&location=91801', {
+                headers: {
+                    'Authorization': 'Bearer ' + petfinderToken
+                }
+            })
+            .then((payload) => payload.json())
+            .then((data) => appendPetfinderData(data))
+        }
+
+        const appendPetfinderData = (data) => {
+            const petInfo = data.animals[7]
+            const petImgURL = petInfo.photos[0].large
+
+            const petDistance = petInfo.distance
+            const petName = petInfo.name
+            console.log(petInfo)
+
+            const petNameDisplay = document.createElement('h1')
+            petNameDisplay.innerText = "The nearest cat lady Toto want to know is " + petName
+            petfinderSection.appendChild(petNameDisplay)
+
+            const petImg = document.createElement('img')
+            petImg.src = petImgURL
+            petImg.alt = "petfinder image"
+            petfinderSection.appendChild(petImg)
+
+            const petText = document.createElement('h3')
+            petText.innerText = "She is " + petDistance + " miles away from Toto"
+            petfinderSection.appendChild(petText)
+
+        }
+
+        const fetchCatfactData = () => {
+            fetch(catfactURL)
+                .then((payload) => payload.json())
+                .then((data) => { appendCatfactData(data) })
+        }
+
+        const appendCatfactData = (data) => {
+            const firstCatfact = data[0]
+            console.log(firstCatfact)
+            const catfactText = firstCatfact.text
+
+            const catfactDisplay = document.createElement('h1')
+            catfactDisplay.innerText = "Toto want you to know: " + catfactText
+            catfactSection.appendChild(catfactDisplay)
+        }
+
+
+
+        triggerButton.addEventListener("click", fetchCocktailData)
+
+    </script>
+</body>
+
+</html>
