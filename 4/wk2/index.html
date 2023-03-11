@@ -6,6 +6,9 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Everything You Need To Know About Toto</title>
+    <link rel="stylesheet" href="https://use.typekit.net/orp2guo.css">
+    <link href="style.css" type="text/css" rel="stylesheet" />
+
 </head>
 
 <body>
@@ -124,21 +127,32 @@
         }
 
         const appendPetfinderData = (data) => {
-            const petInfo = data.animals[7]
-            const petImgURL = petInfo.photos[0].large
 
+            const petInfo = data.animals[Math.floor(Math.random()*10)]
+
+            if (petInfo.photos.length = 0) {
+                const noPetImg = document.createElement('h1')
+                noPetImg.innerText = "No photo for this lady"
+                console.log(noPetImg)
+                petfinderSection.appendChild(noPetImg)
+            } else if (petInfo.photos.length > 0) {
+                const petImgURL = petInfo.photos[0].large
+
+                const petImg = document.createElement('img')
+                petImg.src = petImgURL
+                petImg.alt = "petfinder image"
+                petfinderSection.appendChild(petImg)
+            }
+            
             const petDistance = petInfo.distance
             const petName = petInfo.name
             console.log(petInfo)
+            console.log(petInfo.photos.length)
+
 
             const petNameDisplay = document.createElement('h1')
-            petNameDisplay.innerText = "The nearest cat lady Toto want to know is " + petName
+            petNameDisplay.innerText = "A cat lady near Toto is " + petName
             petfinderSection.appendChild(petNameDisplay)
-
-            const petImg = document.createElement('img')
-            petImg.src = petImgURL
-            petImg.alt = "petfinder image"
-            petfinderSection.appendChild(petImg)
 
             const petText = document.createElement('h3')
             petText.innerText = "She is " + petDistance + " miles away from Toto"
